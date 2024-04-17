@@ -67,7 +67,7 @@ const images = [
 const gallery = document.querySelector('.gallery');
 const item = images.map(image =>
     `<li class="gallery-item">
-    <a  class="gallery-link" href=${image.original}>
+    <a class="gallery-link" href=${image.original}>
     <img
       class="gallery-image"
       src=${image.preview}
@@ -76,14 +76,18 @@ const item = images.map(image =>
     /></a></li>`
 ).join('');
 gallery.insertAdjacentHTML('beforeend', item);
+
 function image(event) {
     event.preventDefault();
-
-    if (event.target.nodeName !== "BUTTON") {
+    if (event.target.nodeName !== 'IMG') {
         return;
     }
-    console.log(event.target);
 
+    const instance = basicLightbox.create(event.target, {
+        closable: false
+    });
+    const visible = basicLightbox.visible();
+    instance.show(() => console.log('lightbox now visible'));
 }
-
 gallery.addEventListener('click', image);
+
