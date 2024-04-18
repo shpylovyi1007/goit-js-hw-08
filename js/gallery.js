@@ -77,17 +77,29 @@ const item = images.map(image =>
 ).join('');
 gallery.insertAdjacentHTML('beforeend', item);
 
-function image(event) {
+function selectedImage(event) {
     event.preventDefault();
     if (event.target.nodeName !== 'IMG') {
         return;
     }
 
-    const instance = basicLightbox.create(event.target, {
-        closable: false
+    const instance = basicLightbox.create(`
+    <div class="modal">
+    <img
+      class="gallery-image"
+      src=${event.target.dataset.source}
+      alt=${event.target.alt}
+    />
+    </div>
+`);
+
+    instance.show();
+    document.addEventListener('click', event => {
+        if (event.target.closest('.modal')) {
+            instance.close();
+        }
     });
-    const visible = basicLightbox.visible();
-    instance.show(() => console.log('lightbox now visible'));
 }
-gallery.addEventListener('click', image);
+gallery.addEventListener('click', selectedImage);
+
 
